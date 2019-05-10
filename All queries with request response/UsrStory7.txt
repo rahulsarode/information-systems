@@ -1,0 +1,89 @@
+User Story 7:
+“As Tourist, I should be able to find the top 5 upcoming trending events and top 5 events of the specific category”
+
+*******Mongo- upcoming events,eventReviews
+*******Redis- Interest poll information
+
+########### Input from User :
+1. To get top 5 trending event user will enter category
+2. To get top 5 event user will enter  category.
+
+########### Expected response :
+1.List of trending events for user selected category
+2.List of top events for user selected category
+
+1.Trending event based on interest poll:
+
+		-Get upcoming event of genre music
+		db.events.find({startDate :{$gte: ISODate()},genre:"music"},{event_id:1})
+
+		Result:
+		NeckarMusicFestival2019-10-11
+		LeimenMusicFestival2019-06-11
+		RohrbachMusicFestival2019-07-11
+		HockenheimMusicFestival2019-08-11
+		dielhemMusicFestival2019-10-11
+		GaibergMusicFestival2019-10-11
+
+		-Get count of users who are interested for these events`:
+
+		SCARD NeckarMusicFestival2019-10-11
+		SCARD LeimenMusicFestival2019-06-11
+		SCARD RohrbachMusicFestival2019-07-11
+		SCARD HockenheimMusicFestival2019-08-11
+		SCARD dielhemMusicFestival2019-10-11
+		SCARD GaibergMusicFestival2019-10-11
+
+-Application layer will select top 5 events based on count
+
+
+**************************************
+
+
+2.Top events of category Music(Optional) for Year(Optional) based on rating
+
+SMEMBERS top5Music2017 
+--Result
+HockenheimMusicFestival2017-08-11
+NeckarMusicFestival2017-10-11
+LeimenMusicFestival2017-06-11
+RohrbachMusicFestival2017-07-11
+dielhemMusicFestival2017-10-11
+
+
+
+
+---Preperation for data
+
+-Get events for user given year and for genre 
+db.events.find({startDate:{$gte: ISODate("2017-01-01T00:00:00.000Z")},endDate:{$lt: ISODate("2018-01-01T00:00:00.000Z")}},{event_id:1}).pretty()
+Result : 
+NeckarMusicFestival2017-10-11
+LeimenMusicFestival2017-06-11
+RohrbachMusicFestival2017-07-11
+HockenheimMusicFestival2017-08-11
+dielhemMusicFestival2017-10-11
+GaibergMusicFestival2017-10-11
+
+-Get avrg rating for this events from eventReviews collection	
+
+db.eventReviews.aggregate(
+  [
+  { $match : { reivewFor : "NeckarMusicFestival2017-10-11" }},
+     {
+       "$group":
+         {
+           _id: "AverageRating",
+           avgRating: { $avg: "$rating"}
+         }
+     }
+   ]
+)
+
+-Post top 5 events of music of 2017 in redis
+sadd top5Music2017 HockenheimMusicFestival2017-08-11
+sadd top5Music2017 NeckarMusicFestival2017-10-11
+sadd top5Music2017 LeimenMusicFestival2017-06-11
+sadd top5Music2017 RohrbachMusicFestival2017-07-11
+sadd top5Music2017 dielhemMusicFestival2017-10-11
+

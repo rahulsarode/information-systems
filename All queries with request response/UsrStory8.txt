@@ -1,0 +1,55 @@
+User story 8:
+
+“As an event organiser, I should be able to check for all the service providers based on category or search popular service providers based on past recrods, and I want to post a review for service provider of previously organized event.”
+
+***********Mongo - service provider details,service provider reviews,event,user. 
+
+###########Input from User :
+
+1. To find service provider - user will enter category for which he/she is looking for popular service provider.
+2. Post a review about service provider
+
+###########--------------expected response : 
+
+1. List of the service provider for user selected category
+2. Success note on submitting a review for a particular service provider.
+ 
+ 
+ 1.Get popular Service provider 
+
+-Get Service Providers based on category :
+db.serviceProviders.find({category:"food"}).pretty()
+
+
+-Get average ratings of service providers of that category
+db.serviceProviderReviews.aggregate(
+  [
+  { $match : { reivewFor : "Mein-Wunschcatering" }},
+     {
+       "$group":
+         {
+           _id: "AverageRating",
+           avgRating: { $avg: "$rating"}
+         }
+     }
+   ]
+)
+
+2.Post review of service provider by event organizer
+
+-Get list of event hosted by event orangnizer
+db.events.find({createdBy : "jessicaSmith"},{event_id:1}).pretty();
+-Get the service provider list for a particular event so that event organzer can post a review about it.
+db.serviceProviders.find({eventsServedFor:"LeimenMusicFestival2017-06-11"});
+
+-Event orangnizer will post a review about particular service provider.
+db.serviceProviderReviews.insert(	
+   {
+     reivewFor:"Food Catering services Heidelberg",
+     userId:"jessicaSmith",
+	 rating:3,
+	 review:"food was good with good management",
+	 event:{id:"5ccee25edffee0495fc6cb3f",eventName:"LeimenMusicFestival2017-06-11"},
+	 isActive:true
+   }
+)

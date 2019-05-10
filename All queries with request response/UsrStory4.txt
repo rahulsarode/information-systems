@@ -1,0 +1,119 @@
+User-Story 4
+
+“As a tourist, I should be able to check for the event in the nearby city/town for a given city/town based on the date of visit and the type of event (Genre/Category)”.
+In this operation we are searching for nearby events occuring in other nearby cities.
+	Inputs from user : 
+					Date
+					City (The city in which user is visiting)
+					Genre of the event
+					Maximum distance in kilometers  (optional default is 100)
+					Maximum estimated travel time in minutes(optional default is 60 minutes)
+	
+	Expected response : A list of events for in the nearby cities 
+
+
+1) Create City
+	CREATE (München : City {name:'München'})
+	CREATE (Heidelberg : City {name:'Heidelberg'})
+	CREATE (Mannheim : City {name:'Mannheim'})
+	CREATE (Heilbronn : City {name:'Heilbronn'})
+	CREATE (Frankfurt : City {name:'Frankfurt'})
+	CREATE (Ludwigshafen : City {name:'Ludwigshafen'})
+
+2) Create Relation between cities with distance between cities as property. CONNECTED {distance : 50}
+	
+	MATCH (city1:City)
+	WITH city1
+	MATCH (city2:City)
+	WHERE city1.name = "Heidelberg" AND city2.name = "Ludwigshafen"
+	CREATE (city1)-[relation:CONNECTED{distanceInKilometers : 22, averageTimeInMinutes : 40}]->(city2)
+	
+	MATCH (city1:City)
+	WITH city1
+	MATCH (city2:City)
+	WHERE city1.name = "Heidelberg" AND city2.name = "Mannheim"
+	CREATE (city1)-[relation:CONNECTED{distanceInKilometers : 20, averageTimeInMinutes : 30}]->(city2)	
+	
+	MATCH (city1:City)
+	WITH city1
+	MATCH (city2:City)
+	WHERE city1.name = "Heidelberg" AND city2.name = "Heilbronn"
+	CREATE (city1)-[relation:CONNECTED{distanceInKilometers : 70, averageTimeInMinutes : 45}]->(city2)
+
+	MATCH (city1:City)
+	WITH city1
+	MATCH (city2:City)
+	WHERE city1.name = "Heidelberg" AND city2.name = "Frankfurt"
+	CREATE (city1)-[relation:CONNECTED{distanceInKilometers : 90, averageTimeInMinutes : 90}]->(city2)
+
+	MATCH (city1:City)
+	WITH city1
+	MATCH (city2:City)
+	WHERE city1.name = "Mannheim" AND city2.name = "Ludwigshafen"
+	CREATE (city1)-[relation:CONNECTED{distanceInKilometers : 2, averageTimeInMinutes : 15}]->(city2)
+	
+3) Search : 
+
+	This operation is divided in 2 parts 
+		1) Get list of nearby cities (Neo 4j)
+		2) Get events with given genre and date in the list of nearby cities (Mongo DB)
+	
+	-	Querry in Neo will return list of nearby cities
+	
+			MATCH (city1{name: "Heidelberg"})-[r:CONNECTED]-(city2) 
+			WHERE r.distanceInKilometers <= 45 
+			RETURN city2.name
+	
+			-	Response : 
+						"Mannheim"
+						"Ludwigshafen"
+			
+	-	For each city run the following querry in mongo db 
+		Then querry in mongo to get the detailed events details for genre and date / or get connected city and then querry in mongodb 
+	
+			db.events.find({ 
+			$or: [{
+			city:"Mannheim"
+			},
+			{
+			city:"Ludwigshafen"
+			}],
+			genre:"science",
+			$or: [{
+			startDate:{$gte: ISODate("2019-05-19T00:00:00Z")},
+			endDate:{$lte: ISODate("2019-05-19T23:59:00Z")}
+			},
+			{
+			startDate:{$lte: ISODate("2019-05-19T00:00:00Z")},
+			endDate:{$gte: ISODate("2019-05-19T23:59:00Z")}
+			}]}).pretty()
+			
+			-	Response : 
+				{
+					"_id" : ObjectId("5ccd7811fd5118fdac1e2e0f"),
+					"event_id" : "timeTravelMannhiemMay2019",
+					"name" : "Time Travel Mannheim",
+					"description" : "How did the universe come about? Where do the stars and planets come from? What has happened on earth? On a journey through time from the beginning of the universe until today, you will witness the birth of the first stars and the birth of the Milky Way. They experience huge stellar explosions, catastrophic comet impacts on the primordial Earth and the development of life.",
+					"genre" : "science",
+					"venue" : "Wilhelm-Varnholt-Allee 1, Mannheim",
+					"city" : "Mannheim",
+					"type" : "Indoor",
+					"capacity" : "50",
+					"ticketPrice" : "10 €",
+					"ageRestriction" : "No",
+					"friendly" : [
+							"kids",
+							"disabled"
+					],
+					"ageGroup" : [
+							"kids",
+							"youth",
+							"elderly"
+					],
+					"additionalInfo" : "Further information about the event can be found at https://www.planetarium-mannheim.de/programme/astronomische-programme/zeitreise/",
+					"socialLinks" : "www.facebook.com/MaimarktMannheim2019",
+					"eventContact" : "timeTravelMannhiemMay2019@gmail.com",
+					"eventPoster" : "https://www.planetarium-mannheim.de/uploads/pics/one-Ziel.jpg",
+					"startDate" : ISODate("2019-05-09T23:00:00Z"),
+					"endDate" : ISODate("2019-05-09T23:00:00Z")
+				}

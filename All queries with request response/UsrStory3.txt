@@ -1,0 +1,20 @@
+User-Story 3
+“As a student, I want to search the event which offers a student discount."
+"As a Tourist i would like to avail any clubbed or group offers available.”
+
+			Input Parameters :
+						1. Type of offer user wants to avail
+			Expected Response : 
+						list of events who have offer type as specified in the query
+
+	-Query:
+		1) db.events.find({"offers.offerType":"student"}).pretty()
+ 
+				This query returns Event details of all events who have offerType:"student"
+
+		2)db.events.aggregate([{$match:{"offers.offerType":"clubbed"}},{$group:{_id:"$offers.offerTypeid",name:{$addToSet: "$name"}}}]);
+
+				This query returns OfferTypeid along with name of events having this offerTypeid
+			
+	-Response:
+			{ "_id" : [ "c11120" ], "name" : [ "Beer Fest Mannheim", "Neckar Music Festival" ] }

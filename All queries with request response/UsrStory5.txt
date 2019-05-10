@@ -1,0 +1,250 @@
+User-Story 5
+ 
+“As a tourist, I would like to visit the Jumbo Circus Heidelberg, see the prices and book 2 seats for a date and time slot”
+
+In this operaion the user will  
+1) Search for all the events with the keyword circus in the city of Heidelberg for a given date.
+		Input Parameters : 
+						1) Event name which contains "circus"
+						2) Date
+						3) City Heidelberg
+							
+		Expected Response : 
+						list of events with name circus
+		
+		- Querry : 
+				db.events.find({
+					city:"Heidelberg",
+					name: {"$regex": "circus", "$options" : "i"},
+					$or: [{
+					startDate:{$gte: ISODate("2019-05-06T00:00:00Z")},
+					endDate:{$lte: ISODate("2019-05-06T23:59:00Z")}
+					},
+					{
+					startDate:{$lte: ISODate("2019-05-06T00:00:00Z")},
+					endDate:{$gte: ISODate("2019-05-06T23:59:00Z")}
+					}]}).pretty()
+								
+		- Response 
+				
+					{
+					"_id" : ObjectId("5cc70531bc8d5c235c5caf09"),
+					"event_id" : "JumboCircusHeidelbergyMay2019",
+					"name" : "Jumbo Circus",
+					"description" : "The Psychedelic Circus Open Air Festival blurs the boundaries between reality and fiction in its dream world of music and circus.  Also this year the psychedelic travelling circus was a guest again in Göhlen/Ludwigslust on the seasoned grounds. In best weather from 31.5. to 4.6.18 Psytrance fans from all over the world celebrated peacefully as usual on 5 days and 4 nights on both stages Arena and Manege to the finest music. The decoration of Mae and Moe in the Open Air Arena was breathtakingly beautiful and together with the mapping, the laser show and the fire artists, placed on the two extra stages, offered a wonderful feast for the eyes and a perfect setting for the best music acts of the scene.",
+					"genre" : "entertainment",
+					"venue" : "Charlottenplatz 17  Entrance 4 ",
+					"city" : "Heidelberg",
+					"type" : "Indoor",
+					"capacity" : "150",
+					"ageRestriction" : "No",
+					"seatMap" : ObjectId("5ccd98c1a9dd0914d64e1de3"),
+					"friendly" : [
+								"elderly",
+								"kids",
+								"youth"
+							],
+					"ageGroup" : [
+					"youth",
+					"elderly",
+					"kids"
+					],
+					"additionalInfo" : "Further information about the event can be found at www.heidelberg-kongresshaus.de",
+					"eventContact" : "circus-heidelberg@gmail.com",
+					"socialLinks" : "www.facebook.com/weltcircus",
+					"eventPoster" : "https://www.heidelberg-marketing.de/uploads/pics/Heidelbergman-Ziel.jpg",
+					"startDate" : ISODate("2019-05-01T00:00:00Z"),
+					"endDate" : ISODate("2019-05-30T23:59:00Z"),
+					"createdBy" : "jessicaSmith",
+					"offers" : [
+								{
+									"offerType" : "group",
+									"description" : "Discount on booking for more than 5 people",
+									"discountPercent" : "0.2",
+									"active" : "true"
+								},
+								{
+									"offerType" : "kids",
+									"description" : "10%for kids",
+									"discountPercent" : "0.1",
+									"active" : "true"
+								},
+								{
+									"offerType" : "physically challenged",
+									"description" : "discount 15% for specially abled people",
+									"discountPercent" : "0.2",
+									"active" : "true"
+								},
+								{
+									"offerType" : "elderly",
+									"description" : "offer 10% on valid ID",
+									"discountPercent" : "0.1",
+									"active" : "true"
+								},
+								{
+									"offerType" : "early bird",
+									"description" : "5% offer if booked before august30",
+									"discountPercent" : "0.05",
+									"active" : "true"
+								},
+								{
+									"offerType" : "student",
+									"description" : "15% offer if booked with valid ID",
+									"discountPercent" : "0.15",
+									"active" : "true"
+								}
+							]
+					}
+		
+		2) Click on the particular event : Jumbo Circus Munchen 
+			Once the user clicks on the event then on book, he should see the shows available 
+			This querry runs in the shows collection. Which has a collection of all the shows for all the events.
+			
+			Input Paramaters : 
+								1) event_id from the event details
+								2) date
+			Expected Response :
+								List of shows with times 
+			-Querry
+					db.shows.find({
+									event_id:"JumboCircusHeidelbergMay2019",
+									showStartTime:{$gte: ISODate("2019-05-06T00:00:00Z")},
+									showEndTime:{$lte: ISODate("2019-05-06T23:59:00Z")}},
+									{
+										showStartTime:1, showEndTime:1, event_id:1
+					}).pretty();
+					
+				- Response : 	
+								{
+										"_id" : ObjectId("5ccd9dbca9dd0914d64e1de6"),
+										"event_id" : "JumboCircusHeidelbergMay2019",
+										"showStartTime" : ISODate("2019-05-06T12:00:00Z"),
+										"showEndTime" : ISODate("2019-05-06T16:00:00Z")
+								}
+								{
+										"_id" : ObjectId("5ccd9dc7a9dd0914d64e1de7"),
+										"event_id" : "JumboCircusHeidelbergMay2019",
+										"showStartTime" : ISODate("2019-05-06T17:00:00Z"),
+										"showEndTime" : ISODate("2019-05-06T21:00:00Z")
+								}
+			
+		3) Once the user selects a particular time slot, he will see a UI with the seating layout and already booked seats and the available seats. 
+				This can be broken down in 2 things 
+					1) Querry the layout plan of the circus. This can be queried from the seating collection. The seat layoutis created while the event is created. 
+						- Querry 
+			db.seating.find({
+			event_id:"JumboCircusHeidelbergMay2019"
+			}).pretty();
+								
+					The response will be the seat layout.
+								_id : ObjectId("5ccd98c1a9dd0914d64e1de3"),
+								event_id:"JumboCircusHeidelbergMay2019",
+								totalSeats:"150",
+								sections:[{
+										sectionName:"Platinum",
+										sectionDescription:"This is the premium seat category",
+										cost:"50 EUR",
+										sectionLayout:{
+														A:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
+														B:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22],
+														C:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24]
+										}
+										},
+										{
+										sectionName:"Gold",
+										sectionDescription:"This is the middle seat category",
+										cost:"10 EUR",
+										sectionLayout:{
+													A:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26],
+													B:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28],
+													C:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]
+												}
+											}]
+					
+					2) Querry the shows database for the particular event and for the given date and show time.
+						- Querry 
+	db.shows.find({
+	event_id:"JumboCircusHeidelbergMay2019",
+	showStartTime : ISODate("2019-05-06T17:00:00Z"),
+	showEndTime : ISODate("2019-05-06T21:00:00Z")},{
+	seatLayout:1
+	}
+	).pretty();
+				
+								- Response - 
+												{
+														"_id" : ObjectId("5ccd9dc7a9dd0914d64e1de7"),
+														"seatLayout" : {
+																"Platinum" : {
+																		"A" : [ ],
+																		"B" : [ ],
+																		"C" : [ ]
+																},
+																"Gold" : {
+																		"A" : [ ],
+																		"B" : [ ],
+																		"C" : [ ]
+																}
+														}
+												}
+												
+					The response will be a set the booked seats in the seat layout format.
+					
+					The UI can map the booked seats to the layout so the user will see a plan of the seats.
+					
+		4) The user will select 2 seats in the premium category and the book them. 
+			Two sections 
+					1) Update the shows database with the booked seats
+						User selects seat no 8,9 on the first row, in the Platinum category
+							db.shows.update({_id:ObjectId("5ccd9dc7a9dd0914d64e1de7")},
+											{$push:{"seatLayout.Platinum.A":{$each:["8","9"]}}}
+										)
+										
+						After insertion of the seats in db for the selected show, the show will look like : 
+									{
+										"_id" : ObjectId("5ccd9dc7a9dd0914d64e1de7"),
+										"seatLayout" : {
+												"Platinum" : {
+														"A" : [
+																"8",
+																"9",
+														],
+														"B" : [ ],
+														"C" : [ ]
+												},
+												"Gold" : {
+														"A" : [ ],
+														"B" : [ ],
+														"C" : [ ]
+												}
+										}
+								}
+							
+					2) Create a booking object which contains the user name, show time, registration id, event name, and seat locations, category, price, total amount. In the booking collection.
+
+							The booking object will have the following details : 
+								1) userName 
+								2) event_id
+								3) showStartTime : shows collection
+								4) showEndTime : shows collection
+								5) seatNumberArray : Selected Seats by the user. These can be stored in a variable in the application layer, and then selected.
+								6) category : Selected Seats by the user
+								7) price : from the shows database based on the seats selected : 
+								8) Total Booking amount : Total bill amount
+								9) userID
+								10) eventName
+					All the above fields can be extraced from the above mentioned queries 
+					
+							db.booking.insert({
+									userName: "Maria",
+									userID: "Maria001",
+									event_id: "JumboCircusHeidelbergMay2019",
+									eventName: "Jumbo Circus Heidelberg",
+									showStartTime: ISODate("2019-05-06T17:00:00.000+00:00"),
+									showEndTime:ISODate("2019-05-06T21:00:00.000+00:00"),
+									seatCategory: "Platinum",
+									seatNumberArray: ["A8", "A9"],
+									price: 50,
+									totalAmount: 100,
+									bookingDate: new Date()
+							})

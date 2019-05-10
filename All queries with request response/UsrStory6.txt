@@ -1,0 +1,51 @@
+User story 6:
+---Add Interest poll---
+“As a Tourist or Visitor, I should be able to add interest poll for Neckar Music Festival which I am interested to attend, and I also want to post review of Heidelberg Castle Illumination which I have visited.”
+
+*********** Mongo - event details
+*********** Redis - interest poll information
+
+###########Input from User :
+1.Post a review about events.
+2.To add interest poll user will select a particular event.
+
+
+
+########### Expected response : 
+1.Success message after addition of review.
+2.Success message after addition of interest poll.
+
+1. Post review queries for event
+
+		-Get list of events attended by user markZuker390
+		db.booking.find({"userID" : "ronHook"}).pretty();
+
+		-Post review of an event
+		db.eventReviews.insert(
+		   {
+			 reivewFor:"MotorSkillLearningMay2019Heidelberg",
+			 userId:"ronHook",
+			 rating:2,
+			 review:"I didn't like this event",
+			 isActive:false
+		   }
+		)
+
+		3. Get the list of the reviews posted by the user
+		db.eventReviews.find({userId:"ronHook"}).pretty();
+
+2. Add Interest Poll for an event 
+		-Get upcoming events for catgory music
+		db.events.find({startDate :{$gte: ISODate()},genre:"music"},{event_id:1})
+
+		-Add Interest Poll for NeckarMusicFestival2019-10-11
+		SADD NeckarMusicFestival2019-10-11 Lisa01 
+
+
+		***Additional queries related to this story***
+		-To get list of users interested to attend event
+		SMEMBERS NeckarMusicFestival2019-10-11
+		-To get count of total user interested for an event
+		SCARD NeckarMusicFestival2019-10-11
+
+

@@ -1,0 +1,18 @@
+User-Story 2
+“Sarah is an aged tourist, who wants to check if there are any dance therapy workshops in Heidelberg in next 2 days intended for an elderly age-group audience; which is an indoor event, so that she can attend the event”.
+
+		Input Parameters :
+				filters to find event
+
+		Expected Response :
+				events within specified range
+	-Query
+			db.events.find({
+			genre:"dance",
+			type:"Indoor",
+			ageGroup:["youth","elderly"],
+			friendly:"elderly", 
+			$where: function () {return Date.now() + 2}
+			}).pretty()
+	-Response
+			This will return A dance Therapy Workshop in heidelberg which is friendly with elderly people.
