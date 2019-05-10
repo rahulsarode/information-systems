@@ -1,0 +1,39 @@
+1) Create City
+CREATE (München : City {name:'München'})
+CREATE (Heidelberg : City {name:'Heidelberg'})
+CREATE (Mannheim : City {name:'Mannheim'})
+CREATE (Heilbronn : City {name:'Heilbronn'})
+CREATE (Frankfurt : City {name:'Frankfurt'})
+CREATE (Ludwigshafen : City {name:'Ludwigshafen'})
+
+2) Create Relation between cities with distance between cities as property. CONNECTED {distance : 50}
+	
+	MATCH (city1:City)
+	WITH city1
+	MATCH (city2:City)
+	WHERE city1.name = "Heidelberg" AND city2.name = "Ludwigshafen"
+	CREATE (city1)-[relation:CONNECTED{distanceInKilometers : 22, averageTimeInMinutes : 40}]->(city2)
+	
+	MATCH (city1:City)
+	WITH city1
+	MATCH (city2:City)
+	WHERE city1.name = "Heidelberg" AND city2.name = "Mannheim"
+	CREATE (city1)-[relation:CONNECTED{distanceInKilometers : 20, averageTimeInMinutes : 30}]->(city2)	
+	
+	MATCH (city1:City)
+	WITH city1
+	MATCH (city2:City)
+	WHERE city1.name = "Heidelberg" AND city2.name = "Heilbronn"
+	CREATE (city1)-[relation:CONNECTED{distanceInKilometers : 70, averageTimeInMinutes : 45}]->(city2)
+
+	MATCH (city1:City)
+	WITH city1
+	MATCH (city2:City)
+	WHERE city1.name = "Heidelberg" AND city2.name = "Frankfurt"
+	CREATE (city1)-[relation:CONNECTED{distanceInKilometers : 90, averageTimeInMinutes : 90}]->(city2)
+
+	MATCH (city1:City)
+	WITH city1
+	MATCH (city2:City)
+	WHERE city1.name = "Mannheim" AND city2.name = "Ludwigshafen"
+	CREATE (city1)-[relation:CONNECTED{distanceInKilometers : 2, averageTimeInMinutes : 15}]->(city2)

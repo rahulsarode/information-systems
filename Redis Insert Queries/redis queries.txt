@@ -1,0 +1,22 @@
+Insert commands
+
+redis commands for interest poll 
+
+-Add Interest Poll  
+SADD NeckarMusicFestival2019-05 Lisa01 
+SADD NeckarMusicFestival2019-10-11 Lisa01 Maria001 markZuker390 nickJoann ronHook henryBonn jackJonathan
+SADD LeimenMusicFestival2019-06-11 Lisa01 Maria001 markZuker390 nickJoann ronHook henryBonn 
+SADD RohrbachMusicFestival2019-07-11 Lisa01 Maria001 markZuker390 nickJoann ronHook 
+SADD HockenheimMusicFestival2019-08-11 Lisa01 Maria001 markZuker390 nickJoann 
+SADD dielhemMusicFestival2019-10-11 Lisa01 Maria001 markZuker390 
+SADD GaibergMusicFestival2019-10-11 Lisa01 Maria001 
+
+
+redis commands for top 5 events
+
+
+sadd top5Music2017 HockenheimMusicFestival2017-08-11
+sadd top5Music2017 NeckarMusicFestival2017-10-11
+sadd top5Music2017 LeimenMusicFestival2017-06-11
+sadd top5Music2017 RohrbachMusicFestival2017-07-11
+sadd top5Music2017 dielhemMusicFestival2017-10-11

@@ -1,0 +1,25 @@
+{"_id":{"$oid":"5cceee8fdffee0495fc6cb44"},"reivewFor":"HockenheimMusicFestival2017-08-11","userId":"amandaCely002","rating":{"$numberInt":"5"},"review":"Awesome music","isActive":true}
+{"_id":{"$oid":"5cceee8fdffee0495fc6cb45"},"reivewFor":"HockenheimMusicFestival2017-08-11","userId":"ronHook","rating":{"$numberInt":"1"},"review":"food was horrible","isActive":true}
+{"_id":{"$oid":"5cceee8fdffee0495fc6cb46"},"reivewFor":"HockenheimMusicFestival2017-08-11","userId":"henryBonn","rating":{"$numberInt":"2"},"review":"worst management","isActive":true}
+{"_id":{"$oid":"5cceee8fdffee0495fc6cb47"},"reivewFor":"HockenheimMusicFestival2017-08-11","userId":"nickJoann","rating":{"$numberInt":"4"},"review":"Awesome","isActive":true}
+{"_id":{"$oid":"5cceeea0dffee0495fc6cb48"},"reivewFor":"dielhemMusicFestival2017-10-11","userId":"amandaCely002","rating":{"$numberInt":"1"},"review":"not going to this event ever again","isActive":true}
+{"_id":{"$oid":"5cceeea0dffee0495fc6cb49"},"reivewFor":"dielhemMusicFestival2017-10-11","userId":"ronHook","rating":{"$numberInt":"1"},"review":"horrible exprience","isActive":true}
+{"_id":{"$oid":"5cceeea0dffee0495fc6cb4a"},"reivewFor":"dielhemMusicFestival2017-10-11","userId":"henryBonn","rating":{"$numberInt":"2"},"review":"worst management","isActive":true}
+{"_id":{"$oid":"5cceeea0dffee0495fc6cb4b"},"reivewFor":"dielhemMusicFestival2017-10-11","userId":"nickJoann","rating":{"$numberInt":"1"},"review":"very bad management","isActive":true}
+{"_id":{"$oid":"5cceeea9dffee0495fc6cb4c"},"reivewFor":"GaibergMusicFestival2017-10-11","userId":"amandaCely002","rating":{"$numberInt":"1"},"review":"too loud music..wasnt clear enough to hear","isActive":true}
+{"_id":{"$oid":"5cceeea9dffee0495fc6cb4d"},"reivewFor":"GaibergMusicFestival2017-10-11","userId":"ronHook","rating":{"$numberInt":"5"},"review":"enjoyed alot with friends","isActive":true}
+{"_id":{"$oid":"5cceeea9dffee0495fc6cb4e"},"reivewFor":"GaibergMusicFestival2017-10-11","userId":"henryBonn","rating":{"$numberInt":"2"},"review":"musical was not upto the mark","isActive":true}
+{"_id":{"$oid":"5cceeea9dffee0495fc6cb4f"},"reivewFor":"GaibergMusicFestival2017-10-11","userId":"nickJoann","rating":{"$numberInt":"5"},"review":"wonderful experience","isActive":true}
+{"_id":{"$oid":"5cceeeb1dffee0495fc6cb50"},"reivewFor":"NeckarMusicFestival2017-10-11","userId":"Lisa02","rating":{"$numberInt":"1"},"review":"Great music, bad management","isActive":true}
+{"_id":{"$oid":"5cceeeb1dffee0495fc6cb51"},"reivewFor":"NeckarMusicFestival2017-10-11","userId":"henryBonn","rating":{"$numberInt":"3"},"review":"Over good but not up to the mark","isActive":true}
+{"_id":{"$oid":"5cceeeb1dffee0495fc6cb52"},"reivewFor":"NeckarMusicFestival2017-10-11","userId":"nickJoann","rating":{"$numberInt":"5"},"review":"Awesome","isActive":true}
+{"_id":{"$oid":"5cceeeb1dffee0495fc6cb53"},"reivewFor":"NeckarMusicFestival2017-10-11","userId":"markZuker390","rating":{"$numberInt":"3"},"review":"Liked the politeness of the organizers","isActive":true}
+{"_id":{"$oid":"5cceeebfdffee0495fc6cb54"},"reivewFor":"LeimenMusicFestival2017-06-11","userId":"Lisa02","rating":{"$numberInt":"1"},"review":"It was lipsync and not actual performance","isActive":true}
+{"_id":{"$oid":"5cceeebfdffee0495fc6cb55"},"reivewFor":"LeimenMusicFestival2017-06-11","userId":"henryBonn","rating":{"$numberInt":"3"},"review":"Over good ","isActive":true}
+{"_id":{"$oid":"5cceeebfdffee0495fc6cb56"},"reivewFor":"LeimenMusicFestival2017-06-11","userId":"nickJoann","rating":{"$numberInt":"5"},"review":"Awesome performance","isActive":true}
+{"_id":{"$oid":"5cceeebfdffee0495fc6cb57"},"reivewFor":"LeimenMusicFestival2017-06-11","userId":"markZuker390","rating":{"$numberInt":"3"},"review":"Liked the helpfulness of the organizers","isActive":true}
+{"_id":{"$oid":"5cceeec8dffee0495fc6cb58"},"reivewFor":"RohrbachMusicFestival2017-07-11","userId":"Lisa02","rating":{"$numberInt":"1"},"review":"Pathetic","isActive":true}
+{"_id":{"$oid":"5cceeec8dffee0495fc6cb59"},"reivewFor":"RohrbachMusicFestival2017-07-11","userId":"henryBonn","rating":{"$numberInt":"3"},"review":"Average performance","isActive":true}
+{"_id":{"$oid":"5cceeec8dffee0495fc6cb5a"},"reivewFor":"RohrbachMusicFestival2017-07-11","userId":"nickJoann","rating":{"$numberInt":"5"},"review":"Greate organization, planning and execution","isActive":true}
+{"_id":{"$oid":"5cceeec8dffee0495fc6cb5b"},"reivewFor":"RohrbachMusicFestival2017-07-11","userId":"markZuker390","rating":{"$numberInt":"3"},"review":"Music was good but very poor management","isActive":true}
+{"_id":{"$oid":"5ccef808dffee0495fc6cb5d"},"reivewFor":"MotorSkillLearningMay2019Heidelberg","userId":"ronHook","rating":{"$numberInt":"2"},"review":"I didn't like this event","isActive":false}

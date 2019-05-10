@@ -1,0 +1,746 @@
+﻿
+User-Story 1
+“As an event organizer, I want to organize a an circus event in the city of Munchen and would like provide the information about the event.”
+
+MONGODB1
+db.events.insertOne({
+	"event_id" : "JumboCircusHeidelbergMay2019", 
+	"name" : "Jumbo Circus", 
+	"description" : "The Psychedelic Circus Open Air Festival blurs the boundaries between reality and fiction in its dream world of music and circus.  Also this year the psychedelic travelling circus was a guest again in Göhlen/Ludwigslust on the seasoned grounds. In best weather from 31.5. to 4.6.18 Psytrance fans from all over the world celebrated peacefully as usual on 5 days and 4 nights on both stages Arena and Manege to the finest music. The decoration of Mae and Moe in the Open Air Arena was breathtakingly beautiful and together with the mapping, the laser show and the fire artists, placed on the two extra stages, offered a wonderful feast for the eyes and a perfect setting for the best music acts of the scene.", 
+	"genre" : "entertainment", 
+	"venue" : "Charlottenplatz 17  Entrance 4 ", 
+	"city" : "Heidelberg", 
+	"type" : "Indoor", 
+	"capacity" : "1500", 
+	"ageRestriction" : "No", 
+	"friendly" : [ "elderly", "kids", "youth" ], 
+	"ageGroup" : [ "youth", "elderly", "kids" ], 
+	"seatMap" : ObjectId("5cc99c24bc8d5c235c5caf0c"), 
+	"additionalInfo" : "Further information about the event can be found at www.heidelberg-kongresshaus.de", "eventContact" : "circus-heidelberg@gmail.com", "socialLinks" : "www.facebook.com/weltcircus", "eventPoster" : "https://www.heidelberg-marketing.de/uploads/pics/Heidelbergman-Ziel.jpg", 
+	"startDate" : ISODate("2019-05-01T23:00:00Z"), 
+	"endDate" : ISODate("2019-05-30T23:00:00Z"), 
+	"createdBy" : "James Woolworth", 
+	"offers" : [ 
+		{ 
+			"offerType" : "group", 
+			"description" : "Discount on booking for more than 5 people", 
+			"discountPercent" : "0.2", 
+			"active" : "true", 
+			"offerTypeid":g12345
+		}, 
+		{ 
+			"offerType" : "kids", 
+			"description" : "10%for kids", 
+			"discountPercent" : "0.1", 
+			"active" : "true", 
+			"offerTypeid":k23345
+		}, 
+		{ 
+			"offerType" : "physically challenged", 
+			"description" : "discount 15% for specially abled people", 
+			"discountPercent" : "0.2", 
+			"active" : "true",
+			"offerTypeid":p00345
+		}, 
+		{ 
+			"offerType" : "elderly", 
+			"description" : "offer 10% on valid ID", 
+			"discountPercent" : "0.1", 
+			"active" : "true",
+			"offerTypeid":e22345			
+		}, 
+		{
+			"offerType" : "early bird", 
+			"description" : "5% offer if booked before august30", 
+			"discountPercent" : "0.05", 
+			"active" : "true", 
+			"offerTypeid":e56345
+		}, 
+		{ 
+			"offerType" : "student", 
+			"description" : "15% offer if booked with valid ID", 
+			"discountPercent" : "0.15", 
+			"active" : "true",
+			"offerTypeid":s34345
+		} ]
+})
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+db.seating.insert({
+event_id:"JumboCircusHeidelbergMay2019",
+		totalSeats:"150",
+		sections:[{
+						sectionName:"Platinum",
+						sectionDescription:"This is the premium seat category",
+						cost:"50 EUR",
+						sectionLayout:{
+											A:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
+											B:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22],
+											C:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24]
+						}
+					},
+					{
+						sectionName:"Gold",
+						sectionDescription:"This is the middle seat category",
+						cost:"10 EUR",
+						sectionLayout:{
+											A:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26],
+											B:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28],
+											C:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]
+						}
+					}]
+})
+
+////////////////////////////// SHOWS of JUMBO CIRCUS /////////////////////////////////////////////////////
+db.shows.insert(
+{
+	event_id:"JumboCircusHeidelbergMay2019",
+	showStartTime:ISODate("2019-05-01T12:00:00Z"),
+	showEndTime:ISODate("2019-05-01T16:00:00Z"),
+	seatLayout:{
+				Platinum:
+						{
+							A:[],
+							B:[],
+							C:[]
+						},
+				Gold: 
+						{
+							A:[],
+							B:[],
+							C:[]
+						}
+				}
+}	
+)
+
+
+
+
+User-Story 2
+“Sarah is an aged tourist, who wants to check if there are any dance therapy workshops in Heidelberg in next 2 days intended for an elderly age-group audience; which is an indoor event, so that she can attend the event”.
+
+		Input Parameters :
+				filters to find event
+
+		Expected Response :
+				events within specified range
+	-Query
+			db.events.find({
+			genre:"dance",
+			type:"Indoor",
+			ageGroup:["youth","elderly"],
+			friendly:"elderly", 
+			$where: function () {return Date.now() + 2}
+			}).pretty()
+	-Response
+			This will return A dance Therapy Workshop in heidelberg which is friendly with elderly people.
+
+// This query can be used if Sarah wants to search some event by key word/ string.
+db.events.find({name:{'$regex' : 'therapy', '$options' : 'i'}}).pretty()
+ 
+User-Story 3
+“As a student, I want to search the event which offers a student discount."
+"As a Tourist i would like to avail any clubbed or group offers available.”
+
+			Input Parameters :
+						1. Type of offer user wants to avail
+			Expected Response : 
+						list of events who have offer type as specified in the query
+
+	-Query:
+		1) db.events.find({"offers.offerType":"student"}).pretty()
+ 
+				This query returns Event details of all events who have offerType:"student"
+
+		2)db.events.aggregate([{$match:{"offers.offerType":"clubbed"}},{$group:{_id:"$offers.offerTypeid",name:{$addToSet: "$name"}}}]);
+
+				This query returns OfferTypeid along with name of events having this offerTypeid
+			
+	-Response:
+			{ "_id" : [ "c11120" ], "name" : [ "Beer Fest Mannheim", "Neckar Music Festival" ] }
+
+
+
+ User-Story 4
+
+“As a tourist, I should be able to check for the event in the nearby city/town for a given city/town based on the date of visit and the type of event (Genre/Category)”.
+In this operation we are searching for nearby events occuring in other nearby cities.
+	Inputs from user : 
+						Date
+						City (The city in which user is visiting)
+						Genre of the event
+						Maximum distance in kilometers  (optional default is 100)
+						Maximum estimated travel time in minutes(optional default is 60 minutes)
+	
+	Expected response : A list of events for in the nearby cities 
+
+
+1) Create City
+CREATE (München : City {name:'München'})
+CREATE (Heidelberg : City {name:'Heidelberg'})
+CREATE (Mannheim : City {name:'Mannheim'})
+CREATE (Heilbronn : City {name:'Heilbronn'})
+CREATE (Frankfurt : City {name:'Frankfurt'})
+CREATE (Ludwigshafen : City {name:'Ludwigshafen'})
+
+2) Create Relation between cities with distance between cities as property. CONNECTED {distance : 50}
+	
+	MATCH (city1:City)
+	WITH city1
+	MATCH (city2:City)
+	WHERE city1.name = "Heidelberg" AND city2.name = "Ludwigshafen"
+	CREATE (city1)-[relation:CONNECTED{distanceInKilometers : 22, averageTimeInMinutes : 40}]->(city2)
+	
+	MATCH (city1:City)
+	WITH city1
+	MATCH (city2:City)
+	WHERE city1.name = "Heidelberg" AND city2.name = "Mannheim"
+	CREATE (city1)-[relation:CONNECTED{distanceInKilometers : 20, averageTimeInMinutes : 30}]->(city2)	
+	
+	MATCH (city1:City)
+	WITH city1
+	MATCH (city2:City)
+	WHERE city1.name = "Heidelberg" AND city2.name = "Heilbronn"
+	CREATE (city1)-[relation:CONNECTED{distanceInKilometers : 70, averageTimeInMinutes : 45}]->(city2)
+
+	MATCH (city1:City)
+	WITH city1
+	MATCH (city2:City)
+	WHERE city1.name = "Heidelberg" AND city2.name = "Frankfurt"
+	CREATE (city1)-[relation:CONNECTED{distanceInKilometers : 90, averageTimeInMinutes : 90}]->(city2)
+
+	MATCH (city1:City)
+	WITH city1
+	MATCH (city2:City)
+	WHERE city1.name = "Mannheim" AND city2.name = "Ludwigshafen"
+	CREATE (city1)-[relation:CONNECTED{distanceInKilometers : 2, averageTimeInMinutes : 15}]->(city2)
+	
+3) Search : 
+
+	This operation is divided in 2 parts 
+		1) Get list of nearby cities (Neo 4j)
+		2) Get events with given genre and date in the list of nearby cities (Mongo DB)
+	
+	-	Querry in Neo will return list of nearby cities
+	
+			MATCH (city1{name: "Heidelberg"})-[r:CONNECTED]-(city2) 
+			WHERE r.distanceInKilometers <= 45 
+			RETURN city2.name
+	
+			-	Response : 
+							"Mannheim"
+							"Ludwigshafen"
+			
+	-	For each city run the following querry in mongo db 
+		Then querry in mongo to get the detailed events details for genre and date / or get connected city and then querry in mongodb 
+	
+			db.events.find({ 
+			$or: [{
+			city:"Mannheim"
+			},
+			{
+			city:"Ludwigshafen"
+			}],
+			genre:"science",
+			$or: [{
+			startDate:{$gte: ISODate("2019-05-19T00:00:00Z")},
+			endDate:{$lte: ISODate("2019-05-19T23:59:00Z")}
+			},
+			{
+			startDate:{$lte: ISODate("2019-05-19T00:00:00Z")},
+			endDate:{$gte: ISODate("2019-05-19T23:59:00Z")}
+			}]}).pretty()
+			
+			-	Response : 
+				{
+						"_id" : ObjectId("5ccd7811fd5118fdac1e2e0f"),
+						"event_id" : "timeTravelMannhiemMay2019",
+						"name" : "Time Travel Mannheim",
+						"description" : "How did the universe come about? Where do the stars and planets come from? What has happened on earth? On a journey through time from the beginning of the universe until today, you will witness the birth of the first stars and the birth of the Milky Way. They experience huge stellar explosions, catastrophic comet impacts on the primordial Earth and the development of life.",
+						"genre" : "science",
+						"venue" : "Wilhelm-Varnholt-Allee 1, Mannheim",
+						"city" : "Mannheim",
+						"type" : "Indoor",
+						"capacity" : "50",
+						"ticketPrice" : "10 €",
+						"ageRestriction" : "No",
+						"friendly" : [
+								"kids",
+								"disabled"
+						],
+						"ageGroup" : [
+								"kids",
+								"youth",
+								"elderly"
+						],
+						"additionalInfo" : "Further information about the event can be found at https://www.planetarium-mannheim.de/programme/astronomische-programme/zeitreise/",
+						"socialLinks" : "www.facebook.com/MaimarktMannheim2019",
+						"eventContact" : "timeTravelMannhiemMay2019@gmail.com",
+						"eventPoster" : "https://www.planetarium-mannheim.de/uploads/pics/one-Ziel.jpg",
+						"startDate" : ISODate("2019-05-09T23:00:00Z"),
+						"endDate" : ISODate("2019-05-09T23:00:00Z")
+				}
+							
+			
+User-Story 5
+ 
+“As a tourist, I would like to visit the Jumbo Circus Heidelberg, see the prices and book 2 seats for a date and time slot”
+
+	In this operaion the user will  
+		1) Search for all the events with the keyword circus in the city of Heidelberg for a given date.
+			Input Parameters : 
+								1) Event name which contains "circus"
+								2) Date
+								3) City Heidelberg
+								
+			Expected Response : 
+								list of events with name circus
+			
+			- Querry : 
+							db.events.find({
+								city:"Heidelberg",
+								name: {"$regex": "circus", "$options" : "i"},
+								$or: [{
+								startDate:{$gte: ISODate("2019-05-06T00:00:00Z")},
+								endDate:{$lte: ISODate("2019-05-06T23:59:00Z")}
+								},
+								{
+								startDate:{$lte: ISODate("2019-05-06T00:00:00Z")},
+								endDate:{$gte: ISODate("2019-05-06T23:59:00Z")}
+								}]}).pretty()
+								
+					- Response 
+					
+								{
+									"_id" : ObjectId("5cc70531bc8d5c235c5caf09"),
+									"event_id" : "JumboCircusHeidelbergyMay2019",
+									"name" : "Jumbo Circus",
+									"description" : "The Psychedelic Circus Open Air Festival blurs the boundaries between reality and fiction in its dream world of music and circus.  Also this year the psychedelic travelling circus was a guest again in Göhlen/Ludwigslust on the seasoned grounds. In best weather from 31.5. to 4.6.18 Psytrance fans from all over the world celebrated peacefully as usual on 5 days and 4 nights on both stages Arena and Manege to the finest music. The decoration of Mae and Moe in the Open Air Arena was breathtakingly beautiful and together with the mapping, the laser show and the fire artists, placed on the two extra stages, offered a wonderful feast for the eyes and a perfect setting for the best music acts of the scene.",
+									"genre" : "entertainment",
+									"venue" : "Charlottenplatz 17  Entrance 4 ",
+									"city" : "Heidelberg",
+									"type" : "Indoor",
+									"capacity" : "150",
+									"ageRestriction" : "No",
+									"seatMap" : ObjectId("5ccd98c1a9dd0914d64e1de3"),
+									"friendly" : [
+											"elderly",
+											"kids",
+											"youth"
+									],
+									"ageGroup" : [
+											"youth",
+											"elderly",
+											"kids"
+									],
+									"additionalInfo" : "Further information about the event can be found at www.heidelberg-kongresshaus.de",
+									"eventContact" : "circus-heidelberg@gmail.com",
+									"socialLinks" : "www.facebook.com/weltcircus",
+									"eventPoster" : "https://www.heidelberg-marketing.de/uploads/pics/Heidelbergman-Ziel.jpg",
+									"startDate" : ISODate("2019-05-01T00:00:00Z"),
+									"endDate" : ISODate("2019-05-30T23:59:00Z"),
+									"createdBy" : "jessicaSmith",
+									"offers" : [
+											{
+													"offerType" : "group",
+													"description" : "Discount on booking for more than 5 people",
+													"discountPercent" : "0.2",
+													"active" : "true"
+											},
+											{
+													"offerType" : "kids",
+													"description" : "10%for kids",
+													"discountPercent" : "0.1",
+													"active" : "true"
+											},
+											{
+													"offerType" : "physically challenged",
+													"description" : "discount 15% for specially abled people",
+													"discountPercent" : "0.2",
+													"active" : "true"
+											},
+											{
+													"offerType" : "elderly",
+													"description" : "offer 10% on valid ID",
+													"discountPercent" : "0.1",
+													"active" : "true"
+											},
+											{
+													"offerType" : "early bird",
+													"description" : "5% offer if booked before august30",
+													"discountPercent" : "0.05",
+													"active" : "true"
+											},
+											{
+													"offerType" : "student",
+													"description" : "15% offer if booked with valid ID",
+													"discountPercent" : "0.15",
+													"active" : "true"
+											}
+									]
+							}
+		
+		2) Click on the particular event : Jumbo Circus Munchen 
+			Once the user clicks on the event then on book, he should see the shows available 
+			This querry runs in the shows collection. Which has a collection of all the shows for all the events.
+			
+			Input Paramaters : 
+								1) event_id from the event details
+								2) date
+			Expected Response :
+								List of shows with times 
+			-Querry
+					db.shows.find({
+									event_id:"JumboCircusHeidelbergMay2019",
+									showStartTime:{$gte: ISODate("2019-05-06T00:00:00Z")},
+									showEndTime:{$lte: ISODate("2019-05-06T23:59:00Z")}},
+									{
+										showStartTime:1, showEndTime:1, event_id:1
+					}).pretty();
+					
+				- Response : 	
+								{
+										"_id" : ObjectId("5ccd9dbca9dd0914d64e1de6"),
+										"event_id" : "JumboCircusHeidelbergMay2019",
+										"showStartTime" : ISODate("2019-05-06T12:00:00Z"),
+										"showEndTime" : ISODate("2019-05-06T16:00:00Z")
+								}
+								{
+										"_id" : ObjectId("5ccd9dc7a9dd0914d64e1de7"),
+										"event_id" : "JumboCircusHeidelbergMay2019",
+										"showStartTime" : ISODate("2019-05-06T17:00:00Z"),
+										"showEndTime" : ISODate("2019-05-06T21:00:00Z")
+								}
+			
+		3) Once the user selects a particular time slot, he will see a UI with the seating layout and already booked seats and the available seats. 
+				This can be broken down in 2 things 
+					1) Querry the layout plan of the circus. This can be queried from the seating collection. The seat layoutis created while the event is created. 
+						- Querry 
+								db.seating.find({
+											event_id:"JumboCircusHeidelbergMay2019"
+								}).pretty();
+								
+					The response will be the seat layout.
+								_id : ObjectId("5ccd98c1a9dd0914d64e1de3"),
+								event_id:"JumboCircusHeidelbergMay2019",
+								totalSeats:"150",
+								sections:[{
+												sectionName:"Platinum",
+												sectionDescription:"This is the premium seat category",
+												cost:"50 EUR",
+												sectionLayout:{
+																	A:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
+																	B:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22],
+																	C:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24]
+												}
+											},
+											{
+												sectionName:"Gold",
+												sectionDescription:"This is the middle seat category",
+												cost:"10 EUR",
+												sectionLayout:{
+																	A:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26],
+																	B:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28],
+																	C:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]
+												}
+											}]
+					
+					2) Querry the shows database for the particular event and for the given date and show time.
+						- Querry 
+								db.shows.find({
+											event_id:"JumboCircusHeidelbergMay2019",
+											showStartTime : ISODate("2019-05-06T17:00:00Z"),
+											showEndTime : ISODate("2019-05-06T21:00:00Z")},{
+												seatLayout:1
+								}
+								).pretty();
+								
+								
+								
+								- Response - 
+												{
+														"_id" : ObjectId("5ccd9dc7a9dd0914d64e1de7"),
+														"seatLayout" : {
+																"Platinum" : {
+																		"A" : [ ],
+																		"B" : [ ],
+																		"C" : [ ]
+																},
+																"Gold" : {
+																		"A" : [ ],
+																		"B" : [ ],
+																		"C" : [ ]
+																}
+														}
+												}
+												
+					The response will be a set the booked seats in the seat layout format.
+					
+					The UI can map the booked seats to the layout so the user will see a plan of the seats.
+					
+		4) The user will select 2 seats in the premium category and the book them. 
+			Two sections 
+					1) Update the shows database with the booked seats
+						User selects seat no 8,9 on the first row, in the Platinum category
+							db.shows.update({_id:ObjectId("5ccd9dc7a9dd0914d64e1de7")},
+											{$push:{"seatLayout.Platinum.A":{$each:["8","9"]}}}
+										)
+										
+						After insertion of the seats in db for the selected show, the show will look like : 
+									{
+										"_id" : ObjectId("5ccd9dc7a9dd0914d64e1de7"),
+										"seatLayout" : {
+												"Platinum" : {
+														"A" : [
+																"8",
+																"9",
+														],
+														"B" : [ ],
+														"C" : [ ]
+												},
+												"Gold" : {
+														"A" : [ ],
+														"B" : [ ],
+														"C" : [ ]
+												}
+										}
+								}
+							
+					2) Create a booking object which contains the user name, show time, registration id, event name, and seat locations, category, price, total amount. In the booking collection.
+
+							The booking object will have the following details : 
+								1) userName 
+								2) event_id
+								3) showStartTime : shows collection
+								4) showEndTime : shows collection
+								5) seatNumberArray : Selected Seats by the user. These can be stored in a variable in the application layer, and then selected.
+								6) category : Selected Seats by the user
+								7) price : from the shows database based on the seats selected : 
+								8) Total Booking amount : Total bill amount
+								9) userID
+								10) eventName
+					All the above fields can be extraced from the above mentioned queries 
+					
+							db.booking.insert({
+									userName: "Maria",
+									userID: "Maria001",
+									event_id: "JumboCircusHeidelbergMay2019",
+									eventName: "Jumbo Circus Heidelberg",
+									showStartTime: ISODate("2019-05-06T17:00:00.000+00:00"),
+									showEndTime:ISODate("2019-05-06T21:00:00.000+00:00"),
+									seatCategory: "Platinum",
+									seatNumberArray: ["A8", "A9"],
+									price: 50,
+									totalAmount: 100,
+									bookingDate: new Date()
+							})
+
+
+ 
+
+			
+User story 6:
+---Add Interest poll---
+“As a Tourist or Visitor, I should be able to add interest poll for Neckar Music Festival which I am interested to attend, and I also want to post review of Heidelberg Castle Illumination which I have visited.”
+
+*********** Mongo - event details
+*********** Redis - interest poll information
+
+###########Input from User :
+1.Post a review about events.
+2.To add interest poll user will select a particular event.
+
+
+
+########### Expected response : 
+1.Success message after addition of review.
+2.Success message after addition of interest poll.
+
+1. Post review queries for event
+
+		-Get list of events attended by user markZuker390
+		db.booking.find({"userID" : "ronHook"}).pretty();
+
+		-Post review of an event
+		db.eventReviews.insert(
+		   {
+			 reivewFor:"MotorSkillLearningMay2019Heidelberg",
+			 userId:"ronHook",
+			 rating:2,
+			 review:"I didn't like this event",
+			 isActive:false
+		   }
+		)
+
+		3. Get the list of the reviews posted by the user
+		db.eventReviews.find({userId:"ronHook"}).pretty();
+
+2. Add Interest Poll for an event 
+		-Get upcoming events for catgory music
+		db.events.find({startDate :{$gte: ISODate()},genre:"music"},{event_id:1})
+
+		-Add Interest Poll for NeckarMusicFestival2019-10-11
+		SADD NeckarMusicFestival2019-10-11 Lisa01 
+
+
+		***Additional queries related to this story***
+		-To get list of users interested to attend event
+		SMEMBERS NeckarMusicFestival2019-10-11
+		-To get count of total user interested for an event
+		SCARD NeckarMusicFestival2019-10-11
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+User Story 7:
+“As Tourist, I should be able to find the top 5 upcoming trending events and top 5 events of the specific category”
+
+*******Mongo- upcoming events,eventReviews
+*******Redis- Interest poll information
+
+########### Input from User :
+1. To get top 5 trending event user will enter category
+2. To get top 5 event user will enter  category.
+
+########### Expected response :
+1.List of trending events for user selected category
+2.List of top events for user selected category
+
+1.Trending event based on interest poll:
+
+		-Get upcoming event of genre music
+		db.events.find({startDate :{$gte: ISODate()},genre:"music"},{event_id:1})
+
+		Result:
+		NeckarMusicFestival2019-10-11
+		LeimenMusicFestival2019-06-11
+		RohrbachMusicFestival2019-07-11
+		HockenheimMusicFestival2019-08-11
+		dielhemMusicFestival2019-10-11
+		GaibergMusicFestival2019-10-11
+
+		-Get count of users who are interested for these events`:
+
+		SCARD NeckarMusicFestival2019-10-11
+		SCARD LeimenMusicFestival2019-06-11
+		SCARD RohrbachMusicFestival2019-07-11
+		SCARD HockenheimMusicFestival2019-08-11
+		SCARD dielhemMusicFestival2019-10-11
+		SCARD GaibergMusicFestival2019-10-11
+
+-Application layer will select top 5 events based on count
+
+
+**************************************
+
+
+2.Top events of category Music(Optional) for Year(Optional) based on rating
+
+SMEMBERS top5Music2017 
+--Result
+HockenheimMusicFestival2017-08-11
+NeckarMusicFestival2017-10-11
+LeimenMusicFestival2017-06-11
+RohrbachMusicFestival2017-07-11
+dielhemMusicFestival2017-10-11
+
+
+
+
+---Preperation for data
+
+-Get events for user given year and for genre 
+db.events.find({startDate:{$gte: ISODate("2017-01-01T00:00:00.000Z")},endDate:{$lt: ISODate("2018-01-01T00:00:00.000Z")}},{event_id:1}).pretty()
+Result : 
+NeckarMusicFestival2017-10-11
+LeimenMusicFestival2017-06-11
+RohrbachMusicFestival2017-07-11
+HockenheimMusicFestival2017-08-11
+dielhemMusicFestival2017-10-11
+GaibergMusicFestival2017-10-11
+
+-Get avrg rating for this events from eventReviews collection	
+
+db.eventReviews.aggregate(
+  [
+  { $match : { reivewFor : "NeckarMusicFestival2017-10-11" }},
+     {
+       "$group":
+         {
+           _id: "AverageRating",
+           avgRating: { $avg: "$rating"}
+         }
+     }
+   ]
+)
+
+-Post top 5 events of music of 2017 in redis
+sadd top5Music2017 HockenheimMusicFestival2017-08-11
+sadd top5Music2017 NeckarMusicFestival2017-10-11
+sadd top5Music2017 LeimenMusicFestival2017-06-11
+sadd top5Music2017 RohrbachMusicFestival2017-07-11
+sadd top5Music2017 dielhemMusicFestival2017-10-11
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+User story 8:
+
+“As an event organiser, I should be able to check for all the service providers based on category or search popular service providers based on past recrods, and I want to post a review for service provider of previously organized event.”
+
+***********Mongo - service provider details,service provider reviews,event,user. 
+
+###########Input from User :
+
+1. To find service provider - user will enter category for which he/she is looking for popular service provider.
+2. Post a review about service provider
+
+###########--------------expected response : 
+
+1. List of the service provider for user selected category
+2. Success note on submitting a review for a particular service provider.
+ 
+ 
+ 1.Get popular Service provider 
+
+-Get Service Providers based on category :
+db.serviceProviders.find({category:"food"}).pretty()
+
+
+-Get average ratings of service providers of that category
+db.serviceProviderReviews.aggregate(
+  [
+  { $match : { reivewFor : "Mein-Wunschcatering" }},
+     {
+       "$group":
+         {
+           _id: "AverageRating",
+           avgRating: { $avg: "$rating"}
+         }
+     }
+   ]
+)
+
+2.Post review of service provider by event organizer
+
+-Get list of event hosted by event orangnizer
+db.events.find({createdBy : "jessicaSmith"},{event_id:1}).pretty();
+-Get the service provider list for a particular event so that event organzer can post a review about it.
+db.serviceProviders.find({eventsServedFor:"LeimenMusicFestival2017-06-11"});
+
+-Event orangnizer will post a review about particular service provider.
+db.serviceProviderReviews.insert(	
+   {
+     reivewFor:"Food Catering services Heidelberg",
+     userId:"jessicaSmith",
+	 rating:3,
+	 review:"food was good with good management",
+	 event:{id:"5ccee25edffee0495fc6cb3f",eventName:"LeimenMusicFestival2017-06-11"},
+	 isActive:true
+   }
+)
